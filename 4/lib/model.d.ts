@@ -1956,6 +1956,17 @@ export abstract class Model {
   static findOrCreate(options: FindOrInitializeOptions): Promise<Model>;
 
   /**
+   * A more performant findOrCreate that will not work under a transaction (at least not in postgres)
+   * Will execute a find call, if empty then attempt to create, if unique constraint then attempt to find again
+   *
+   * @param options
+   * @param options.where where A hash of search attributes.
+   * @param [options.defaults] Default values to use if creating a new instance
+   * @see {Model#findAll} for a full specification of find and options
+   */
+  static findCreateFind(options: FindOrInitializeOptions): Promise<Model>;
+
+  /**
    * Insert or update a single row. An update will be executed if a row which matches the supplied values on
    * either the primary key or a unique key is found. Note that the unique index must be defined in your
    * sequelize model and not just in the table. Otherwise you may experience a unique constraint violation,
